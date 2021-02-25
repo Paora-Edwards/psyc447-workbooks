@@ -1,0 +1,36 @@
+---
+title: "Journal/Workbook 1"
+author: "Paul Edwards"
+date: "25 February 2021"
+bibliography: fishingforcompliments.bib
+csl: apa_7th.csl
+output:
+  pdf_document:
+    latex_engine: xelatex
+    fig_caption: yes
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60), tidy=TRUE, echo = TRUE)
+```
+
+# Give a fish, teach to fish
+
+Setting up a GitHub-enabled version control project in RStudio was initially frustrating, like many coding experiences before it. The instructions provided by Joe and Johannes seemed deceptively simple. I have come to understand that this is a general principle in coding pedagogy; "Give a [person] a fish and you feed [them] for a day. Teach a [person] to fish and you feed [them] for a lifetime."
+
+Despite the frustration, being forced to fill in the gaps between instructions enabled me to have a better understanding than if it had been laid out exactingly. After downloading Git and being unable to find the .exe file, Johannes _helpfully_ pointed out that I had not followed the sacred code of the helpdesk technician: "Have you tried turning it on and off again?" Rather shamefacedly I managed to link my repository.
+
+Another issue was creating an SSH key which I had not done before. The [GitHub guide](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) was not overly helpful in advising me to copy the public SSH key I'd created in Git Bash, for the simple reason that it did not identify what file the key was saved to, nor what character length the key should resemble. Some quick Googling and scanning Stack Overflow revealed the answer, to great relief. Unfortunately I have not yet had the opportunity to return the favour and feed the multitude with my own paltry offerings of ~~bread and fish~~ knowledge, despite having the fervour of a pseudo-religious convert to these coding development tools.
+
+More generally, I am excited for what this course is intending to prepare us with. The ability to conduct advanced data analytic techniques with today's home computing power is unprecedented, leading to new ways of open collaboration. The power of quantitative research is illustrated in the collapse of Northern Cod stocks in Atlantic Canada in the 1990s (see Figure 1).
+
+<center>
+
+![Collapse of Atlantic Cod Stocks Off the East Coast of Newfoundland in 1992 [@mea2005]](codcatch.jpg){width=50%}
+
+</center>
+
+The population size at the time is argued to have been overestimated due to modelling of catch rate data from modern vessels equipped with vastly superior technology than in previous decades [@hutchings1994]. The resulting sample error from abundant harvests led to overconfidence that fishery stocks were plentiful when in fact they were at dangerously low levels. The ego has been a fatality both for the human self and for Cod.^[This was once revealed to me in a bream.]
+
+# References
