@@ -23,7 +23,7 @@ Despite the frustration, being forced to fill in the gaps between instructions e
 
 Another issue was creating an SSH key which I had not done before. The [GitHub guide](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) was not overly helpful in advising me to copy the public SSH key I'd created in Git Bash, for the simple reason that it did not identify what file the key was saved to, nor what character length the key should resemble. Some quick Googling and scanning Stack Overflow revealed the answer, to great relief. Unfortunately I have not yet had the opportunity to return the favour and feed the multitude with my own paltry offerings of ~~bread and fish~~ knowledge, despite having the fervour of a pseudo-religious convert to these coding development tools.
 
-More generally, I am excited for what this course is intending to prepare us with. The ability to conduct advanced data analytic techniques with today's home computing power is unprecedented, leading to new ways of open collaboration. The power of quantitative research is illustrated in the collapse of Northern Cod stocks in Atlantic Canada in the 1990s (see Figure 1).
+More generally, I am excited for what this course is intended to prepare us with. The ability to conduct advanced data analytic techniques with today's home computing power is unprecedented, leading to new ways of open collaboration. The power of quantitative research is illustrated in the collapse of Northern Cod stocks in Atlantic Canada in the 1990s (see Figure 1).
 
 <center>
 
