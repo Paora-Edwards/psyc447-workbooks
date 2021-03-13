@@ -1,0 +1,189 @@
+---
+title: "Workbook_3"
+author: "Paul Edwards"
+date: "10/03/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library("tidyverse")
+library("patchwork")
+library("readr")
+library("sjPlot")
+theme_set(theme_classic())
+```
+
+# Question 1
+
+The following code has a error preventing the data from being graphed correctly:
+```{r}
+ggplot(data = mtcars) + 
+  aes(mpg, wt, colour = factor(cyl))
+```
+Here, the `aes()` function must be inside a `geom_` function such as `geom_point()`.
+```{r}
+#Plot mtcars dataset using scatterplot
+ggplot(data = mtcars) +
+  geom_point(mapping = aes(mpg, wt, colour = factor(cyl)))
+```
+
+# Questions 2 and 3
+
+We can use the `facet()` function to compare different classes, such as year of manufacture. We can also set the plot axes start values to zero using `expand_limits()` and setting x and y to zero.
+```{r}
+#Plot mpg dataset and set axes start values to zero
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy)) + 
+  labs(title = str_wrap("Positive relationship between city and highway fuel efficiency by year of manufacture, in the mpg automobile dataset.", 70)) +
+  facet_wrap(~ year, nrow = 2) +
+  xlab("City miles per gallon") +
+  ylab("Highway miles per gallon") +
+  expand_limits(x = 0, y = 0)
+```
+
+# Question 4
+
+The benefit of setting the x and y axes to zero is that this avoids misleading readers about the scale of the changes represented by the data in the graph. Truncating axes effectively zooms into the graph, potentially making small variations appear larger than they actually are.
+
+A limitation of this approach is that sometimes small variations can be practically significant and therefore important to highlight. If we compare global temperature over a very long period of time, minute variations in temperature may be obscured by the relative stability over time. A plot of global temperature starting at zero may therefore underemphasise the effect of global warming.
+
+# Question 5
+
+Here are two plots:
+```{r warning = FALSE}
+#Store plot of mpg dataset using colours to differentiate car type
+g1 <- ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, colour = class)) +
+  labs(title = str_wrap("Relationship between engine displacement and fuel efficiency in the mpg automobile dataset.", 50)) +
+  xlab("Engine displacement in litres") +
+  ylab("Highway miles per gallon")
+
+#Store plot of mpg dataset using shapes to differentiate car type
+g2 <- ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class)) +
+  scale_shape_manual(values=c(0, 1, 2, 3, 4, 5, 6, 7)) +
+  labs(title = str_wrap("Relationship between engine displacement and fuel efficiency in the mpg automobile dataset.", 50)) +
+  xlab("Engine displacement in litres") +
+  ylab("Highway miles per gallon")
+
+#Call plots with annotation and tags
+g1 / g2 + plot_annotation(title = "Which plot do you prefer and why?", tag_levels = 'a')
+```
+Scatterplot (a) classifies car type by colour, while scatterplot (b) classifies by shape. I find that colour is much easier to intuit, for the simple reason that colours are easier to distinguish than shapes.
+
+# Question 6
+
+As previously described, we can add the `facet()` function to split our plot by a variable:
+```{r}
+#Store plot of mpg dataset faceted by car type
+g3 <- ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, colour = class)) +
+  labs(title = str_wrap("Relationship between engine displacement and fuel efficiency in the mpg automobile dataset.", 50)) +
+  facet_wrap(~ class, nrow = 2) +
+  xlab("Engine displacement in litres") +
+  ylab("Highway miles per gallon")
+#Call plot
+g3
+```
+
+# Question 7
+
+Here are two plots:
+```{r}
+#Call plots with annotation and tags
+g1 / g3 + plot_annotation(title = "Which plot do you prefer and why?", tag_levels = 'a')
+```
+Scatterplot (a) displays all car types in one plot, while scatterplot (b) facets each car type into separate plots. I would perhaps use these graphs in different situations - if it were necessary to compare car types, I would use the non-faceted view, while if it were necessary to examine the shape of the data for each individual car type then the faceted view would be easiest.
+
+# Question 8
+
+We can remove the legend by setting the legend.position to "none":
+```{r}
+#Call plot and remove legend
+g3 + theme(legend.position = "none")
+```
+
+# Question 9
+
+It is important to note which variables are listed in a dataset as factors or numerical values, as this affects how R will 
+```{r message = FALSE, warning = FALSE}
+#Read dataset and scope data
+issp <- readr::read_csv2(url("https://raw.githubusercontent.com/go-bayes/psych-447/main/data/issp.csv"))
+head(issp)
+str(issp)
+
+#Re-code variables and save to new dataset
+ip <- issp %>%
+  mutate(
+    id = factor(id),
+    thr_ath = as.factor(thr_ath),
+    thr_bd = as.factor(thr_bd),
+    thr_ch = as.factor(thr_ch),
+    thr_hd = as.factor(thr_hd),
+    thr_jw = as.factor(thr_jw),
+    thr_ms = as.factor(thr_ms),
+    neg_ath = as.factor(neg_ath),
+    neg_bd = as.factor(neg_bd),
+    neg_ch = as.factor(neg_ch),
+    neg_hd  = as.factor(neg_hd),
+    neg_jw = as.factor(neg_jw),
+    neg_ms = as.factor(neg_ms),
+    wave  = as.factor(wave),
+    nzeuro = as.factor(nzeuro),
+    eduyears = as.numeric(eduyears),
+    male = as.factor(male),
+    age = as.numeric(age),
+    rightwing = as.numeric(rightwing),
+    rural = as.factor(rural),
+    religiosity = as.numeric(religiosity)
+  )
+
+#Store plot of ip dataset using jitter to distinguish frequency of Likert responses
+g4 <- ggplot(data = ip, aes(y = as.numeric(thr_ms), x = religiosity, colour = wave))  +  geom_jitter(alpha = .1) + 
+  geom_smooth(method = lm, fullrange = FALSE, alpha = 0.1) +
+  labs(title = str_wrap("Relationship between religiosity and perceived threat from Muslims in the ISSP dataset.", 70)) +
+  xlab("Religiosity") +
+  ylab("Perceived threat from Muslims") +
+  scale_y_continuous(limits = c(0,4))
+g4
+```
+
+# Question 10
+
+We can adjust the limits of the y axis using the `scale_y_continuous()` function.
+```{r message = FALSE, warning = FALSE}
+#Adjust y-axis limits
+g4 + scale_y_continuous(limits = c(1,4))
+```
+
+# Question 11
+
+```{r message = FALSE, warning = FALSE}
+#Plot cross-tabulation of ip dataset
+plot_xtab(
+    ip$thr_ms,
+    ip$wave,
+    show.total = FALSE,
+    show.n = FALSE,
+    geom.colors = c("lightgreen", "darkred")
+    ) +
+  labs(title = str_wrap("Cross-tabulation of perceived threat from Muslims across study waves in the ISSP dataset.", 65)) +
+  xlab("Threatened by Muslims") +
+  ylab("Frequency") +
+  scale_y_continuous(limits=c(0,1)) +
+  theme(plot.title = element_text(size=14), axis.text.x = element_text(angle = 20, hjust = 1)
+)
+```
+The original graph has been amended above as follows:
+
++ Added title.
++ Separated axis label code onto different lines.
++ Removed hashtag from `scale_y_continuous()` and `theme()` functions to display as code, not comment.
++ Resized y axis to reflect that scale of cross-tab plot cannot exceed 1.
++ Combined plot title and axis text into a single `theme()` function.
++ Resized title to match other plots.
++ Separated final end parenthesis onto different line.
