@@ -142,7 +142,7 @@ nz_4 <- nz_3 %>%
     Religion.Church,
     breaks = c(-Inf, 1, 4, Inf),
     labels = c("0", "1-3", "4+"), 
-    right = TRUE)) %>%
+    right = FALSE)) %>%
   dplyr::mutate(Church.Freq = forcats::fct_relevel(Church.Freq, c("0", "1-3", "4+")))
 ```
 
